@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# Maven build output
+*.eclipse
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment & secrets
+application-prod.properties
+application-local.properties
+*.env
+
+# Logs
+*.log
+logs/
