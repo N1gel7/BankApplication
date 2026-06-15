@@ -16,6 +16,7 @@ public class Transaction {
     private Account sender;
     @ManyToOne
     private Account receiver;
+    @Column(nullable = false)
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;

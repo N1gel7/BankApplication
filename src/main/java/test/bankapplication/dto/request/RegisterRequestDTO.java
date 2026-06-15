@@ -1,5 +1,7 @@
 package test.bankapplication.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import test.bankapplication.enums.KycStatus;
 import test.bankapplication.enums.UserRole;
 
@@ -7,9 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class RegisterRequestDTO {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
     private String email;
+    @NotBlank
+    @Size(min = 6, max = 16)
     private LocalDate DOB;
     private KycStatus kycStatus;
     private LocalDateTime createdAt;
