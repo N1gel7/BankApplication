@@ -1,7 +1,11 @@
 package test.bankapplication.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import test.bankapplication.entitiy.Account;
 
-public interface Account extends JpaRepository<Account,Integer> {
+import java.util.Optional;
 
+public interface AccountRepository extends JpaRepository<Account,Integer> {
+
+    Optional<Account> findByAccountNumber(String accountNumber);
 }

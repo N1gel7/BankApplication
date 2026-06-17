@@ -14,19 +14,16 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private BigDecimal balance;
-    private BigDecimal dailyBalance;
-    private BigDecimal transferLimit;
 
     public Account() {
     }
 
-    public Account(User user, String accountNumber, AccountType accountType, BigDecimal balance, BigDecimal dailyBalance, BigDecimal transferLimit) {
+    public Account(User user, String accountNumber, AccountType accountType, BigDecimal balance) {
         this.user = user;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.balance = balance;
-        this.dailyBalance = dailyBalance;
-        this.transferLimit = transferLimit;
+
     }
 
     public Integer getId() {
@@ -69,19 +66,4 @@ public class Account {
         this.balance = balance;
     }
 
-    public BigDecimal getDailyBalance() {
-        return dailyBalance;
-    }
-
-    public void setDailyBalance(BigDecimal dailyBalance) {
-        this.dailyBalance = dailyBalance;
-    }
-
-    public BigDecimal getTransferLimit() {
-        return transferLimit;
-    }
-
-    public void setTransferLimit(BigDecimal transferLimit) {
-        this.transferLimit = transferLimit;
-    }
 }

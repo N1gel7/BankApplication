@@ -10,6 +10,7 @@ public class TransactionResponseDTO {
     private BigDecimal amount;
     private TransactionType transactionType;
     private BigDecimal fee;
+    private BigDecimal totalDeducted;
     private TransactionStatus transactionStatus;
 
     public TransactionResponseDTO() {
@@ -59,5 +60,13 @@ public class TransactionResponseDTO {
 
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    public BigDecimal getTotalDeducted() {
+        return totalDeducted;
+    }
+
+    public void setTotalDeducted(BigDecimal totalDeducted) {
+        this.totalDeducted = totalDeducted;
     }
 }

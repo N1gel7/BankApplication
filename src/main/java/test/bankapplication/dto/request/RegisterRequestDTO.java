@@ -17,19 +17,22 @@ public class RegisterRequestDTO {
     private String email;
     @NotBlank
     @Size(min = 6, max = 16)
+    private String password;
+    @NotBlank
     private LocalDate DOB;
-    private KycStatus kycStatus;
-    private LocalDateTime createdAt;
-    private UserRole role;
+    @NotBlank
+    private String phoneNumber;
 
     public RegisterRequestDTO() {
     }
 
-    public RegisterRequestDTO(String firstName, String lastName, String email, LocalDate DOB) {
+    public RegisterRequestDTO(String firstName, String lastName, String email, String password, LocalDate DOB, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.DOB = DOB;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -56,6 +59,14 @@ public class RegisterRequestDTO {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public LocalDate getDOB() {
         return DOB;
     }
@@ -64,27 +75,11 @@ public class RegisterRequestDTO {
         this.DOB = DOB;
     }
 
-    public KycStatus getKycStatus() {
-        return kycStatus;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setKycStatus(KycStatus kycStatus) {
-        this.kycStatus = kycStatus;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

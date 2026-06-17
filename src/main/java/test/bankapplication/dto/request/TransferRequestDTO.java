@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class TransferRequestDTO {
     private BigDecimal amount;
-    private Integer receiverId;
+    private String accountNumber;
 
     public TransferRequestDTO() {
     }
 
-    public TransferRequestDTO(BigDecimal amount, Integer receiverId) {
+    public TransferRequestDTO(BigDecimal amount, String accountNumber) {
         this.amount = amount;
-        this.receiverId = receiverId;
+        this.accountNumber = accountNumber;
     }
 
     public BigDecimal getAmount() {
@@ -22,11 +22,11 @@ public class TransferRequestDTO {
         this.amount = amount;
     }
 
-    public Integer getReceiverId() {
-        return receiverId;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setReceiverId(Integer receiverId) {
-        this.receiverId = receiverId;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

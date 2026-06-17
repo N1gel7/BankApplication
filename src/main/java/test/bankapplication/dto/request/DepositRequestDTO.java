@@ -7,13 +7,14 @@ import java.math.BigDecimal;
 public class DepositRequestDTO {
     @NotBlank
     private BigDecimal amount;
-
+    private String accountNumber;
 
     public DepositRequestDTO() {
     }
 
-    public DepositRequestDTO(BigDecimal amount) {
+    public DepositRequestDTO(BigDecimal amount, String accountNumber) {
         this.amount = amount;
+        this.accountNumber = accountNumber;
     }
 
     public BigDecimal getAmount() {
@@ -22,5 +23,13 @@ public class DepositRequestDTO {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }
