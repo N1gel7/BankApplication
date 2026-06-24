@@ -23,14 +23,26 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 public class TransactionService {
-    @Value("${account.transfer.limit}")
-    private BigDecimal transferLimit;
-    @Value("${account.balance.limit}")
-    private BigDecimal minimumBalance;
-    @Value("${account.transfer.fee}")
-    private BigDecimal transferFee;
-    private TransactionRepository transactionRepository;
-    private AccountRepository accountRepository;
+    private final BigDecimal transferLimit;
+    private final BigDecimal minimumBalance;
+    private final BigDecimal transferFee;
+    private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
+
+    public TransactionService(
+            @Value("${account.transfer.limit}") BigDecimal transferLimit,
+            @Value("${account.balance.limit}") BigDecimal minimumBalance,
+            @Value("${account.transfer.fee}") BigDecimal transferFee,
+            TransactionRepository transactionRepository,
+            AccountRepository accountRepository) {
+        this.transferLimit = transferLimit;
+        this.minimumBalance = minimumBalance;
+        this.transferFee = transferFee;
+        this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
+    }
+
+
 
     public TransactionResponseDTO transfer(TransferRequestDTO transferRequestDTO,Integer senderId){
         Account sender = accountRepository.findById(senderId).orElseThrow(()->new ResourceNotFoundException("This Account Does not exist"));
@@ -64,6 +76,7 @@ public class TransactionService {
         transaction.setFee(fee);
         transaction.setCreatedAt(LocalDateTime.now());
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
+        transactionRepository.save(transaction);
         return toTransactionResponse(transaction);
     }
 
