@@ -5,7 +5,7 @@ import test.bankapplication.enums.AccountType;
 public class AccountRequestDTO {
     private AccountType accountType;
 
-    public AccountRequestDTO(AccountType accountType) {
+    public AccountRequestDTO() {
         this.accountType = accountType;
     }
 
