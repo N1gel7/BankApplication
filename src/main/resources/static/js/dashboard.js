@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     const alertBox = document.getElementById("alert-box");
 
-    // Modals
+
     const depositModal = document.getElementById("deposit-modal");
     const transferModal = document.getElementById("transfer-modal");
 
@@ -41,15 +41,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (user.kycSubmitted) {
                 kycBanner.textContent = "KYC Status: PENDING - Please wait for admin approval.";
                 kycBanner.className = "alert warning";
-                
-                // Hide the file input form and just show the disabled button
                 kycActionSection.classList.remove("hidden");
                 const kycForm = document.getElementById("kyc-form");
                 if(kycForm) {
                     kycForm.innerHTML = `<button class="btn btn-primary" disabled>Under Review</button>`;
                 }
             } else {
-                // If they haven't submitted yet in this browser session
                 kycBanner.textContent = `KYC Status: ACTION REQUIRED`;
                 kycBanner.className = "alert error";
                 kycActionSection.classList.remove("hidden");
@@ -107,7 +104,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Buttons and Forms
     document.getElementById("kyc-form")?.addEventListener("submit", async (e) => {
         e.preventDefault();
         try {
@@ -145,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Modal Toggles
+
     document.getElementById("open-deposit-modal").addEventListener("click", () => depositModal.classList.add("show"));
     document.getElementById("close-deposit").addEventListener("click", () => depositModal.classList.remove("show"));
     

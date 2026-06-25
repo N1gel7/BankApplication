@@ -5,36 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeoBank - Admin Portal</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: left;
-        }
-        th {
-            background-color: var(--bg-light);
-        }
-    </style>
 </head>
 <body>
-    <div class="auth-container" style="max-width: 800px;">
+    <div class="auth-container auth-container-extra-wide">
         <div class="auth-card">
-            <h1 class="brand" style="margin-bottom: 10px; color: #333;">Admin Portal</h1>
-            <p id="welcome-message" style="text-align: center; margin-bottom: 20px; color: var(--text-muted);"></p>
+            <h1 class="brand brand-dark">Admin Portal</h1>
+            <p id="welcome-message" class="welcome-message"></p>
             
             <div id="alert-box" class="alert hidden"></div>
 
-            <div style="padding: 20px; border: 1px solid var(--border-color); border-radius: 5px;">
+            <div class="section-card-no-mt">
                 <h3>Pending KYC Requests</h3>
                 <div class="table-container">
                     <table id="kyc-table">
@@ -48,13 +28,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                            <tr><td colspan="5" class="text-center">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div style="padding: 20px; border: 1px solid var(--border-color); border-radius: 5px; margin-top: 20px;">
+            <div class="section-card">
                 <h3>Global Transactions</h3>
                 <div class="table-container">
                     <table id="txn-table">
@@ -68,13 +48,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                            <tr><td colspan="5" class="text-center">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <p class="toggle-text" style="margin-top: 30px;"><a href="#" id="logout-btn">Logout</a></p>
+            <p class="toggle-text mt-30"><a href="#" id="logout-btn">Logout</a></p>
         </div>
     </div>
     <script src="js/admin.js"></script>

@@ -191,3 +191,123 @@ h2 {
     font-size: 0.8rem;
     background-color: var(--success-green);
 }
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal.show {
+    display: flex;
+}
+.modal-content {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+.modal-title {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Tables */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+th {
+    background-color: var(--bg-light);
+}
+
+/* Utility and layout classes */
+.auth-container-wide { max-width: 600px; }
+.auth-container-extra-wide { max-width: 800px; }
+.mb-10 { margin-bottom: 10px; }
+.mt-15 { margin-top: 15px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.p-5 { padding: 5px; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.font-bold { font-weight: bold; }
+.font-mono { font-family: monospace; }
+.brand-dark { color: #333; }
+.welcome-message { text-align: center; margin-bottom: 20px; color: var(--text-muted); }
+
+/* Component specific */
+.section-card {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.section-card-no-mt {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+.info-text {
+    margin: 10px 0;
+    color: var(--text-muted);
+}
+.info-text-bold {
+    margin: 10px 0;
+    font-weight: bold;
+}
+.balance-text {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+.btn-secondary {
+    margin-top: 0;
+    background-color: #6c757d;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+.fee-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+#transaction-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alertBox.className = "alert hidden";
     }
 
-    // Handle Registration
     if (registerForm) {
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Handle Login
+
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -80,10 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok) {
                     const result = await response.json();
                     showAlert("Login successful! Redirecting...", "success");
-                    // Save basic user info to localStorage
                     localStorage.setItem("user", JSON.stringify(result.userDTO));
                     
-                    const userRole = result.userDTO.role; // e.g. "ADMIN" or "CUSTOMER"
+                    const userRole = result.userDTO.role;
                     
                     setTimeout(() => {
                         if (userRole === "ADMIN" || userRole === "ROLE_ADMIN") {
