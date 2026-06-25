@@ -28,6 +28,10 @@ public class TransactionController {
         return transactionService.getMyTransactions(email);
     }
 
+    @GetMapping("")
+    public List<TransactionResponseDTO> getAllTransactions(@RequestParam(required = false) Integer userId){
+        return  transactionService.getAllTransactions(userId);
+    }
 
 
 }
