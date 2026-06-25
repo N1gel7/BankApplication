@@ -9,7 +9,11 @@ import test.bankapplication.repository.UserRepository;
 
 @Service
 public class CustomerDetailsService implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public CustomerDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     @Override
     public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("This user does not exist"));

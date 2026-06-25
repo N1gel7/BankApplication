@@ -12,7 +12,10 @@ import test.bankapplication.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class KycDocumentService {
     private final UserRepository userRepository;
     private final KycDocumentRepository kycDocumentRepository;
@@ -30,6 +33,9 @@ public class KycDocumentService {
         kycDocument.setUser(user);
         kycDocument.setStatus(DocumentStatus.PENDING);
         kycDocumentRepository.save(kycDocument);
+        
+        user.setKycStatus(KycStatus.PENDING);
+        userRepository.save(user);
     }
 
     public void adminApproveKyc(Integer docId){
@@ -55,6 +61,10 @@ public class KycDocumentService {
 
     public List<KycDocument> getAllPendingDocuments(){
         return kycDocumentRepository.findByStatus(DocumentStatus.PENDING);
+    }
+
+    public List<KycDocument> debugAll(){
+        return kycDocumentRepository.findAll();
     }
 
 }

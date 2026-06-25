@@ -20,8 +20,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AccountService {
-    private UserRepository userRepository;
-    private AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountService(UserRepository userRepository, AccountRepository accountRepository) {
+        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
+    }
     @Value("${account.balance.limit}")
     private BigDecimal minimumBalance;
 
@@ -66,7 +71,7 @@ public class AccountService {
     }
 
     @NonNull
-    static UserDTO getUserDTO(User user) {
+    public static UserDTO getUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());

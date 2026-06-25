@@ -18,7 +18,8 @@ public class RegisterRequestDTO {
     @NotBlank
     @Size(min = 6, max = 16)
     private String password;
-    @NotBlank
+    @jakarta.validation.constraints.NotNull
+    @com.fasterxml.jackson.annotation.JsonProperty("dob")
     private LocalDate DOB;
     @NotBlank
     private String phoneNumber;

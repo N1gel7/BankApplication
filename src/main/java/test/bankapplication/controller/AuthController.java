@@ -17,8 +17,13 @@ import test.bankapplication.service.AuthService;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-    private AuthService authService;
-    private JwtUtil jwtUtil;
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
+
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
+        this.authService = authService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,15 +47,20 @@ public class AuthController {
         return authResponseDTO;
     }
 
-   public void logout(HttpServletResponse response){
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response){
         Cookie cookie = new Cookie("jwt", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         response.addCookie(cookie);
-   }
+    }
 
-
+    @PostMapping("/admin/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthResponseDTO createAdmin(@Valid @RequestBody AdminCreateRequestDTO adminCreateRequestDTO){
+        return authService.createAdmin(adminCreateRequestDTO);
+    }
 
 }

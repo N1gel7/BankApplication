@@ -19,11 +19,11 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomerDetailsService customerDetailsService;
-    private JwtUtil jwtUtil;
-    private PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(CustomerDetailsService customerDetailsService) {
+    public JwtAuthenticationFilter(CustomerDetailsService customerDetailsService, JwtUtil jwtUtil) {
         this.customerDetailsService = customerDetailsService;
+        this.jwtUtil = jwtUtil;
     }
 
 

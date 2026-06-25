@@ -96,7 +96,7 @@ public class AuthServiceTest {
     }
     @Test
     public void testRegister_ValidUser_Success(){
-        when(userRepository.findEmailExists("nigel@gmail.com")).thenReturn(false);
+        when(userRepository.existsByEmail("nigel@gmail.com")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("hashedPassword");
 
         RegisterResponseDTO result = authService.register(registerRequestDTO);
@@ -111,13 +111,13 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_ExistingUser_ThrowsException(){
-        when(userRepository.findEmailExists("nigel@gmail.com")).thenReturn(true);
+        when(userRepository.existsByEmail("nigel@gmail.com")).thenReturn(true);
         assertThatThrownBy(()-> authService.register(registerRequestDTO)).isInstanceOf(DuplicateUserException.class).hasMessage("This user exists");
     }
 
     @Test
     public void testCreateAdmin_ValidUser_Success(){
-        when(userRepository.findEmailExists("admin@gmail.com")).thenReturn(false);
+        when(userRepository.existsByEmail("admin@gmail.com")).thenReturn(false);
         when(passwordEncoder.encode("admin123")).thenReturn("hashedPassword");
         when(userRepository.save(any(User.class))).thenReturn(adminUser);
 
@@ -132,7 +132,7 @@ public class AuthServiceTest {
 
     @Test
     public void testCreateAdmin_ExistingUser_ThrowsException(){
-        when(userRepository.findEmailExists("admin@gmail.com")).thenReturn(true);
+        when(userRepository.existsByEmail("admin@gmail.com")).thenReturn(true);
         assertThatThrownBy(()-> authService.createAdmin(adminCreateRequestDTO)).isInstanceOf(DuplicateUserException.class).hasMessage("This user exists");
     }
 

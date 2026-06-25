@@ -11,11 +11,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @PostMapping("/transfer")
-    public TransactionResponseDTO transfer(@RequestBody TransferRequestDTO transferRequestDTO, String email){
-        return transactionService.transfer(transferRequestDTO,email);
+    public TransactionResponseDTO transfer(@RequestBody TransferRequestDTO transferRequestDTO, java.security.Principal principal){
+        return transactionService.transfer(transferRequestDTO,principal.getName());
     }
 
     @PostMapping("/deposit")
@@ -24,8 +28,8 @@ public class TransactionController {
     }
 
     @GetMapping("/me")
-    public List<TransactionResponseDTO> getTransactions(String email){
-        return transactionService.getMyTransactions(email);
+    public List<TransactionResponseDTO> getTransactions(java.security.Principal principal){
+        return transactionService.getMyTransactions(principal.getName());
     }
 
     @GetMapping("")

@@ -10,6 +10,7 @@ public class AdminCreateRequestDTO {
     private String email;
     private String password;
     private String phoneNumber;
+    @com.fasterxml.jackson.annotation.JsonProperty("dob")
     private LocalDate DOB;
     private UserRole role;
 

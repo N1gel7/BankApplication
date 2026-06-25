@@ -25,13 +25,20 @@ import static test.bankapplication.service.AccountService.getUserDTO;
 
 @Service
 public class AuthService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
-    private JwtUtil jwtUtil;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
     public RegisterResponseDTO register(RegisterRequestDTO registerRequestDTO){
-       if(userRepository.findEmailExists(registerRequestDTO.getEmail())){
+       if(userRepository.existsByEmail(registerRequestDTO.getEmail())){
            throw new DuplicateUserException("This user exists");
        }
         User user = new User();
@@ -39,6 +46,7 @@ public class AuthService {
         user.setLastName(registerRequestDTO.getLastName());
         user.setEmail(registerRequestDTO.getEmail());
         user.setDOB(registerRequestDTO.getDOB());
+        user.setPhoneNumber(registerRequestDTO.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
         user.setKycStatus(KycStatus.PENDING);
         user.setCreatedAt(LocalDateTime.now());
@@ -48,7 +56,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO createAdmin(AdminCreateRequestDTO adminCreateRequestDTO){
-        if(userRepository.findEmailExists(adminCreateRequestDTO.getEmail())){
+        if(userRepository.existsByEmail(adminCreateRequestDTO.getEmail())){
             throw new DuplicateUserException("This user exists");
         }
         User user = new User();

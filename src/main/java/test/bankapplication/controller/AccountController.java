@@ -9,16 +9,20 @@ import test.bankapplication.service.AccountService;
 @RestController
 @RequestMapping("/api/v1/accounts")
 public class AccountController {
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponseDTO createAccount(String email,AccountRequestDTO accountRequestDTO){
-        return accountService.createAccount(email,accountRequestDTO);
+    public AccountResponseDTO createAccount(java.security.Principal principal, @RequestBody AccountRequestDTO accountRequestDTO){
+        return accountService.createAccount(principal.getName(),accountRequestDTO);
     }
     @GetMapping("/me")
-    public AccountResponseDTO getMyAccount(String email){
-        return accountService.getAccountDetails(email);
+    public AccountResponseDTO getMyAccount(java.security.Principal principal){
+        return accountService.getAccountDetails(principal.getName());
     }
 
 

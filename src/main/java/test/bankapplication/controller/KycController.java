@@ -9,19 +9,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/kyc")
 public class KycController {
-    private KycDocumentService kycDocumentService;
+    private final KycDocumentService kycDocumentService;
+
+    public KycController(KycDocumentService kycDocumentService) {
+        this.kycDocumentService = kycDocumentService;
+    }
 
     @PostMapping("/submit")
-    public void submitKyc(String email){
-         kycDocumentService.submitKyc(email);
+    public void submitKyc(java.security.Principal principal){
+         kycDocumentService.submitKyc(principal.getName());
     }
     @PatchMapping("/{docId}/approve")
-    public void approveKyc(Integer docId){
+    public void approveKyc(@PathVariable("docId") Integer docId){
          kycDocumentService.adminApproveKyc(docId);
     }
 
     @PatchMapping("/{docId}/reject")
-  public void rejectKyc(Integer docId,String rejectionMessage){
+  public void rejectKyc(@PathVariable("docId") Integer docId, @RequestParam(required = false) String rejectionMessage){
         kycDocumentService.adminRejectKyc(docId,rejectionMessage);
   }
 

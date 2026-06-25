@@ -53,6 +53,10 @@ public class TransactionService {
         Account receiver = accountRepository.findByAccountNumber(transferRequestDTO.getAccountNumber())
                 .orElseThrow(() -> new ResourceNotFoundException("Receiver account not found"));
 
+        if (sender.getAccountNumber().equals(receiver.getAccountNumber())) {
+            throw new IllegalArgumentException("Cannot transfer money to your own account");
+        }
+
         if (transferRequestDTO.getAmount().compareTo(transferLimit) > 0) {
             throw new TransferLimitExceededException("Exceeds transfer limit");
         }
@@ -138,6 +142,7 @@ public class TransactionService {
         dto.setFee(transaction.getFee());
         dto.setTotalDeducted(totalDeducted);
         dto.setTransactionStatus(transaction.getTransactionStatus());
+        dto.setTimestamp(transaction.getCreatedAt());
         return dto;
     }
 

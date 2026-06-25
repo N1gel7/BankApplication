@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoBank - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container" style="max-width: 600px;">
+        <div class="auth-card">
+            <h1 class="brand" style="margin-bottom: 10px;">NeoBank</h1>
+            <p id="welcome-message" style="text-align: center; margin-bottom: 20px; color: var(--text-muted);"></p>
+            
+            <div id="alert-box" class="alert hidden"></div>
+
+            <!-- KYC Status Banner -->
+            <div id="kyc-banner" class="alert" style="text-align: center; font-weight: bold;">
+                Loading status...
+            </div>
+
+            <!-- SECTION 1: KYC Pending / Unsubmitted -->
+            <div id="kyc-action-section" class="hidden" style="text-align: center; padding: 20px; border: 1px solid var(--border-color); border-radius: 5px; margin-top: 20px;">
+                <h3>Your Account</h3>
+                <p style="margin: 10px 0; color: var(--text-muted);">Submit an official document (e.g. Passport, ID) to activate banking.</p>
+                <form id="kyc-form" style="margin-top: 15px;">
+                    <div class="form-group" style="text-align: left;">
+                        <label for="kyc-document">Upload Document</label>
+                        <input type="file" id="kyc-document" accept=".pdf,.png,.jpg,.jpeg" required style="padding: 5px;">
+                    </div>
+                    <button type="submit" id="submit-kyc-btn" class="btn btn-primary">Submit KYC</button>
+                </form>
+            </div>
+
+            <!-- SECTION 2: KYC Approved (No Account Yet) -->
+            <div id="create-account-section" class="hidden" style="text-align: center; padding: 20px; border: 1px solid var(--border-color); border-radius: 5px; margin-top: 20px;">
+                <h3>Your Account</h3>
+                <p style="margin: 10px 0; color: var(--text-muted);">Account Number: [Pending Creation]</p>
+                <p style="margin: 10px 0; color: var(--text-muted);">Account Type: [Pending Creation]</p>
+                <p style="margin: 10px 0; font-weight: bold;">Balance: $0.00</p>
+                <button id="create-account-btn" class="btn btn-primary" style="background-color: #0056b3;">+ Create Account (SAVINGS)</button>
+            </div>
+
+            <!-- SECTION 3: Active Account -->
+            <div id="active-account-section" class="hidden" style="padding: 20px; border: 1px solid var(--border-color); border-radius: 5px; margin-top: 20px;">
+                <h3 style="text-align: center; margin-bottom: 15px;">Your Account</h3>
+                <p><strong>Account:</strong> <span id="display-account-type">Loading...</span></p>
+                <p><strong>Number:</strong> <span id="display-account-number" style="font-family: monospace;">Loading...</span></p>
+                <p style="font-size: 1.2rem; margin-top: 10px;"><strong>Balance:</strong> $<span id="display-balance">0.00</span></p>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-primary" id="open-deposit-modal" style="margin-top: 0;">Deposit</button>
+                    <button class="btn btn-primary" id="open-transfer-modal" style="margin-top: 0; background-color: #6c757d;">Transfer</button>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h4>Recent Transactions</h4>
+                    <ul id="transaction-list" style="list-style: none; padding: 0; margin-top: 10px; font-size: 0.9rem;">
+                        <li style="color: var(--text-muted);">No recent transactions.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="toggle-text" style="margin-top: 30px;"><a href="#" id="logout-btn">Logout</a></p>
+        </div>
+    </div>
+
+    <!-- Screen 6a: Deposit Modal -->
+    <div id="deposit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-deposit">&times;</span>
+            <h2 style="margin-bottom: 20px; text-align: left;">Deposit Funds</h2>
+            <form id="deposit-form">
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <input type="number" id="deposit-amount" min="1" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Deposit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Screen 6b: Transfer Modal -->
+    <div id="transfer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-transfer">&times;</span>
+            <h2 style="margin-bottom: 20px; text-align: left;">Transfer Funds</h2>
+            <form id="transfer-form">
+                <div class="form-group">
+                    <label>Receiver Account Number</label>
+                    <input type="text" id="transfer-receiver" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <input type="number" id="transfer-amount" min="1" step="0.01" required>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">A 2% transfer fee will be applied automatically.</p>
+                <button type="submit" class="btn btn-primary" style="background-color: #6c757d;">Send Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

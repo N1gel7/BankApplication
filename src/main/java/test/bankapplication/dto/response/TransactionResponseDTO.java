@@ -12,6 +12,7 @@ public class TransactionResponseDTO {
     private BigDecimal fee;
     private BigDecimal totalDeducted;
     private TransactionStatus transactionStatus;
+    private java.time.LocalDateTime timestamp;
 
     public TransactionResponseDTO() {
     }
@@ -68,5 +69,13 @@ public class TransactionResponseDTO {
 
     public void setTotalDeducted(BigDecimal totalDeducted) {
         this.totalDeducted = totalDeducted;
+    }
+
+    public java.time.LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(java.time.LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

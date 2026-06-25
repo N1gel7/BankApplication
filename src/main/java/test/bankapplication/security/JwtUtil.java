@@ -14,16 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
-    @Value("{jwt.expiration}")
+    @Value("${jwt.expiration}")
     private long expiration;
-
-    public JwtUtil(String secretKey, long expiration) {
-        this.secretKey = secretKey;
-        this.expiration = expiration;
-    }
 
     public Key getSigningKey(){
         return Keys.hmacShaKeyFor(secretKey.getBytes());
