@@ -22,9 +22,11 @@ public class KycDocumentService {
         this.kycDocumentRepository = kycDocumentRepository;
     }
 
-    public void submitKyc(Integer userId){
+    public void submitKyc(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("This user does not exist"));
+
         KycDocument kycDocument = new KycDocument();
-        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("This user does not exist"));
         kycDocument.setUser(user);
         kycDocument.setStatus(DocumentStatus.PENDING);
         kycDocumentRepository.save(kycDocument);

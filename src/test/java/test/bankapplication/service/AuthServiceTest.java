@@ -140,7 +140,7 @@ public class AuthServiceTest {
     public void testLogin_ValidUser_Success(){
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(new UsernamePasswordAuthenticationToken("nigel@gmail.com","password123"));
         when(userRepository.findByEmail("nigel@gmail.com")).thenReturn(Optional.of(testUser));
-        when(jwtUtil.generateToken("nigel@gmail.com",UserRole.CUSTOMER)).thenReturn("jwt");
+
 
         AuthResponseDTO result = authService.login(authRequestDTO);
         assertThat(result).isNotNull();

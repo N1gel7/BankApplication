@@ -63,9 +63,9 @@ public class KycServiceTest {
 
     @Test
     public void testSubmitKyc_ValidId_Success(){
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("nigel@gmail.com")).thenReturn(Optional.of(user));
         when(kycDocumentRepository.save(any(KycDocument.class))).thenReturn(kycDocument);
-        kycDocumentService.submitKyc(1);
+        kycDocumentService.submitKyc("nigel@gmail.com");
         verify(kycDocumentRepository,times(1)).save(any(KycDocument.class));
 
     }

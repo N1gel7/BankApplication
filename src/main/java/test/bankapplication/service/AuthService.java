@@ -69,7 +69,6 @@ public class AuthService {
     public AuthResponseDTO login(AuthRequestDTO authRequestDTO){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(),authRequestDTO.getPassword()));
         User user = userRepository.findByEmail(authRequestDTO.getEmail()).orElseThrow(()-> new UsernameNotFoundException("This User does not exist"));
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
         return toAuthResponse(user);
     }
 

@@ -67,17 +67,17 @@ public class AccountTest {
 
     @Test
     public void testCreateAccount_ValidUser_Success(){
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("nigel@gmail.com")).thenReturn(Optional.of(user));
         when(accountRepository.save(any(Account.class))).thenReturn(account);
-        AccountResponseDTO result = accountService.createAccount(1,accountRequestDTO);
+        AccountResponseDTO result = accountService.createAccount("nigel@gmail.com",accountRequestDTO);
         assertThat(result).isNotNull();
         assertThat(result.getAccountType()).isEqualTo(AccountType.SAVINGS);
         verify(accountRepository,times(1)).save(any(Account.class));
     }
     @Test
     public void testCreateAccount_InvalidUser_ThrowsException(){
-        when(userRepository.findById(999)).thenReturn(Optional.empty());
-        assertThatThrownBy(()-> accountService.createAccount(999,accountRequestDTO)).isInstanceOf(ResourceNotFoundException.class).hasMessage("This user does not Exist");
+        when(userRepository.findByEmail("nigel@gmail.com")).thenReturn(Optional.empty());
+        assertThatThrownBy(()-> accountService.createAccount("nigel@gmail.com",accountRequestDTO)).isInstanceOf(ResourceNotFoundException.class).hasMessage("This user does not Exist");
     }
     
 

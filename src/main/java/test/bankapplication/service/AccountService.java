@@ -25,9 +25,9 @@ public class AccountService {
     @Value("${account.balance.limit}")
     private BigDecimal minimumBalance;
 
-  public AccountResponseDTO createAccount(Integer userId,AccountRequestDTO accountRequestDTO){
+  public AccountResponseDTO createAccount(String email,AccountRequestDTO accountRequestDTO){
 
-      User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("This user does not Exist"));
+      User user = userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("This user does not Exist"));
       if(user.getKycStatus() != KycStatus.APPROVED){
           throw new UnauthorizedException("KYC not approved");
       }
@@ -39,6 +39,12 @@ public class AccountService {
       Account savedAccount = accountRepository.save(account);
       return toAccountResponse(savedAccount);
 
+  }
+
+  public AccountResponseDTO getAccountDetails(String email){
+      User user = userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("This user does not exist"));
+      Account account = accountRepository.findByUser(user).orElseThrow(()->new ResourceNotFoundException("This account does not exist"));
+      return toAccountResponse(account);
   }
 
   private String generateAccountNumber(){

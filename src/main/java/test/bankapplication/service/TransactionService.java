@@ -19,6 +19,9 @@ import test.bankapplication.repository.TransactionRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -44,22 +47,24 @@ public class TransactionService {
 
 
 
-    public TransactionResponseDTO transfer(TransferRequestDTO transferRequestDTO,Integer senderId){
-        Account sender = accountRepository.findById(senderId).orElseThrow(()->new ResourceNotFoundException("This Account Does not exist"));
-        Account receiver = accountRepository.findByAccountNumber(transferRequestDTO.getAccountNumber()).orElseThrow(()-> new ResourceNotFoundException("This Account does not exist"));
+    public TransactionResponseDTO transfer(TransferRequestDTO transferRequestDTO, String email) {
+        Account sender = accountRepository.findByUserEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        Account receiver = accountRepository.findByAccountNumber(transferRequestDTO.getAccountNumber())
+                .orElseThrow(() -> new ResourceNotFoundException("Receiver account not found"));
 
-        if(transferRequestDTO.getAmount().compareTo(transferLimit)>0){
-            throw  new TransferLimitExceededException("Exceeds Daily transfer Limit");
+        if (transferRequestDTO.getAmount().compareTo(transferLimit) > 0) {
+            throw new TransferLimitExceededException("Exceeds transfer limit");
         }
-        if(transferRequestDTO.getAmount().compareTo(minimumBalance)<0){
-            throw  new InsufficientFundsException("Insufficient Funds");
+        if (transferRequestDTO.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Amount must be positive");
         }
 
         BigDecimal fee = transferRequestDTO.getAmount().multiply(transferFee);
         BigDecimal totalDeducted = transferRequestDTO.getAmount().add(fee);
 
-        if(sender.getBalance().compareTo(totalDeducted)<0){
-            throw new InsufficientFundsException("Insufficient Funds");
+        if (sender.getBalance().compareTo(totalDeducted) < 0) {
+            throw new InsufficientFundsException("Insufficient funds");
         }
 
         sender.setBalance(sender.getBalance().subtract(totalDeducted));
@@ -69,22 +74,26 @@ public class TransactionService {
         accountRepository.save(receiver);
 
         Transaction transaction = new Transaction();
-        transaction.setReceiver(receiver);
         transaction.setSender(sender);
+        transaction.setReceiver(receiver);
         transaction.setAmount(transferRequestDTO.getAmount());
         transaction.setTransactionType(TransactionType.TRANSFER);
         transaction.setFee(fee);
         transaction.setCreatedAt(LocalDateTime.now());
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionRepository.save(transaction);
-        return toTransactionResponse(transaction);
+
+        return toTransactionResponse(transaction, totalDeducted);
     }
 
-    public TransactionResponseDTO deposit(DepositRequestDTO depositRequestDTO){
-        Account account = accountRepository.findByAccountNumber(depositRequestDTO.getAccountNumber()).orElseThrow(()-> new ResourceNotFoundException("This Account does not exist"));
-        if(depositRequestDTO.getAmount().compareTo(BigDecimal.ZERO)<= 0){
-            throw new InvalidAmountException("The number must be positive");
+    public TransactionResponseDTO deposit(DepositRequestDTO depositRequestDTO) {
+        Account account = accountRepository.findByAccountNumber(depositRequestDTO.getAccountNumber())
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        if (depositRequestDTO.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Amount must be positive");
         }
+
         account.setBalance(account.getBalance().add(depositRequestDTO.getAmount()));
         accountRepository.save(account);
 
@@ -97,19 +106,39 @@ public class TransactionService {
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionRepository.save(transaction);
 
-        return toTransactionResponse(transaction);
+        return toTransactionResponse(transaction, depositRequestDTO.getAmount());
+    }
 
+    public List<TransactionResponseDTO> getMyTransactions(String email){
+        List<Transaction> transactions = transactionRepository.findAllTransactionsByEmail(email);
+        return transactions.stream().map(t->toTransactionResponse(t,t.getAmount().add(t.getFee())))
+                .toList();
 
     }
 
-    private TransactionResponseDTO toTransactionResponse(Transaction transaction){
-        TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();
-        transactionResponseDTO.setId(transaction.getId());
-        transactionResponseDTO.setAmount(transaction.getAmount());
-        transactionResponseDTO.setFee(transaction.getFee());
-        transactionResponseDTO.setTransactionStatus(transaction.getTransactionStatus());
-        return transactionResponseDTO;
+    public List<TransactionResponseDTO> getAllTransactions(Integer userId){
+        List<Transaction> transaction;
+        if (userId != null) {
+           transaction = transactionRepository.findAllTransactionsByUserId(userId);
+        }
+        else{
+            transaction = transactionRepository.findAll();
+        }
 
+        return transaction.stream().map(t->toTransactionResponse(t, t.getAmount().add(t.getFee())))
+        .toList();
+
+    }
+
+    private TransactionResponseDTO toTransactionResponse(Transaction transaction, BigDecimal totalDeducted) {
+        TransactionResponseDTO dto = new TransactionResponseDTO();
+        dto.setId(transaction.getId());
+        dto.setAmount(transaction.getAmount());
+        dto.setTransactionType(transaction.getTransactionType());
+        dto.setFee(transaction.getFee());
+        dto.setTotalDeducted(totalDeducted);
+        dto.setTransactionStatus(transaction.getTransactionStatus());
+        return dto;
     }
 
 }

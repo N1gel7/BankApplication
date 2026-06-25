@@ -123,22 +123,22 @@ public class TransactionTest {
 
     @Test
     public void testTransaction_ValidAccount_Success(){
-        when(accountRepository.findById(1)).thenReturn(Optional.of(sender));
+        when(accountRepository.findByUserEmail("nigel@gmail.com")).thenReturn(Optional.of(sender));
         when(accountRepository.findByAccountNumber("2222222222")).thenReturn(Optional.of(receiver));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(receiver)).thenReturn(receiver);
 
 
-        TransactionResponseDTO result = transactionService.transfer(transferRequestDTO,1);
+        TransactionResponseDTO result = transactionService.transfer(transferRequestDTO,"nigel@gmail.com");
         assertThat(result).isNotNull();
         assertThat(result.getTransactionStatus()).isEqualTo(TransactionStatus.COMPLETED);
 
     }
     @Test
     public void testTransfer_InvalidAccount_ThrowsError(){
-        when(accountRepository.findById(1)).thenReturn(Optional.of(sender));
+        when(accountRepository.findByUserEmail("nigel@gmail.com")).thenReturn(Optional.of(sender));
         when(accountRepository.findByAccountNumber("2222222222")).thenReturn(Optional.empty());
-        assertThatThrownBy(()-> transactionService.transfer(transferRequestDTO,1)).isInstanceOf(ResourceNotFoundException.class).hasMessage("This Account does not exist");
+        assertThatThrownBy(()-> transactionService.transfer(transferRequestDTO,"nigel@gmail.com")).isInstanceOf(ResourceNotFoundException.class).hasMessage("Receiver account not found");
 
 
     }
@@ -154,7 +154,7 @@ public class TransactionTest {
     @Test
     public void testDeposit_InvalidAccount_throwsException(){
         when(accountRepository.findByAccountNumber("2222222222")).thenReturn(Optional.empty());
-        assertThatThrownBy(()-> transactionService.deposit(depositRequestDTO)).isInstanceOf(ResourceNotFoundException.class).hasMessage("This Account does not exist");
+        assertThatThrownBy(()-> transactionService.deposit(depositRequestDTO)).isInstanceOf(ResourceNotFoundException.class).hasMessage("Account not found");
     }
 
 
