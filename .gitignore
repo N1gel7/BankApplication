@@ -48,3 +48,12 @@ application-local.properties
 # Logs
 *.log
 logs/
+
+# Exclude compiled class files
+*.class
+
+# Exclude sensitive cookie files
+*cookie*.txt
+
+# Exclude local shell scripts
+test_*.sh
