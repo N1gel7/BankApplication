@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import test.bankapplication.dto.request.AccountRequestDTO;
 import test.bankapplication.dto.response.AccountResponseDTO;
 import test.bankapplication.dto.response.UserDTO;
-import test.bankapplication.entitiy.Account;
-import test.bankapplication.entitiy.User;
+import test.bankapplication.entity.Account;
+import test.bankapplication.entity.User;
 import test.bankapplication.enums.KycStatus;
 import test.bankapplication.exception.ResourceNotFoundException;
 import test.bankapplication.exception.UnauthorizedException;
@@ -16,7 +16,6 @@ import test.bankapplication.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AccountService {

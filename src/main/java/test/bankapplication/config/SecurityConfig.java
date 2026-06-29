@@ -30,18 +30,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/api/v1/auth/{*path}").permitAll()
-                
-                // KYC Endpoints
+                .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/logout").permitAll()
+                .requestMatchers("/api/v1/auth/admin/create").hasRole("ADMIN")
                 .requestMatchers("/api/v1/kyc/submit").hasRole("CUSTOMER")
                 .requestMatchers("/api/v1/kyc/pending", "/api/v1/kyc/{docId}/approve", "/api/v1/kyc/{docId}/reject").hasRole("ADMIN")
-                .requestMatchers("/api/v1/kyc/debug").permitAll()
-                
-                // Account Endpoints
                 .requestMatchers("/api/v1/accounts/me").hasAnyRole("CUSTOMER", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/accounts").hasRole("CUSTOMER")
-                
-                // Transaction Endpoints
                 .requestMatchers("/api/v1/transactions/transfer", "/api/v1/transactions/deposit", "/api/v1/transactions/me").hasRole("CUSTOMER")
                 .requestMatchers(HttpMethod.GET, "/api/v1/transactions").hasRole("ADMIN")
                 

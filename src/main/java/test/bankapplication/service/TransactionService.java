@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import test.bankapplication.dto.request.DepositRequestDTO;
 import test.bankapplication.dto.request.TransferRequestDTO;
 import test.bankapplication.dto.response.TransactionResponseDTO;
-import test.bankapplication.entitiy.Account;
-import test.bankapplication.entitiy.Transaction;
+import test.bankapplication.entity.Account;
+import test.bankapplication.entity.Transaction;
 import test.bankapplication.enums.TransactionStatus;
 import test.bankapplication.enums.TransactionType;
 import test.bankapplication.exception.InsufficientFundsException;
@@ -20,8 +20,6 @@ import test.bankapplication.repository.TransactionRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional

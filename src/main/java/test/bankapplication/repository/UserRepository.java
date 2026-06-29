@@ -1,7 +1,7 @@
 package test.bankapplication.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import test.bankapplication.entitiy.User;
+import test.bankapplication.entity.User;
 
 import java.util.Optional;
 

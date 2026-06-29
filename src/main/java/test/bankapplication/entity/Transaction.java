@@ -1,4 +1,4 @@
-package test.bankapplication.entitiy;
+package test.bankapplication.entity;
 
 import jakarta.persistence.*;
 import test.bankapplication.enums.TransactionStatus;

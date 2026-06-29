@@ -1,6 +1,5 @@
 package test.bankapplication.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +11,7 @@ import test.bankapplication.dto.request.RegisterRequestDTO;
 import test.bankapplication.dto.response.AuthResponseDTO;
 import test.bankapplication.dto.response.RegisterResponseDTO;
 import test.bankapplication.dto.response.UserDTO;
-import test.bankapplication.entitiy.User;
+import test.bankapplication.entity.User;
 import test.bankapplication.enums.KycStatus;
 import test.bankapplication.enums.UserRole;
 import test.bankapplication.exception.DuplicateUserException;

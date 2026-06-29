@@ -1,8 +1,8 @@
 package test.bankapplication.service;
 
 import org.springframework.stereotype.Service;
-import test.bankapplication.entitiy.KycDocument;
-import test.bankapplication.entitiy.User;
+import test.bankapplication.entity.KycDocument;
+import test.bankapplication.entity.User;
 import test.bankapplication.enums.DocumentStatus;
 import test.bankapplication.enums.KycStatus;
 import test.bankapplication.exception.ResourceNotFoundException;
@@ -10,7 +10,6 @@ import test.bankapplication.repository.KycDocumentRepository;
 import test.bankapplication.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
@@ -61,10 +60,6 @@ public class KycDocumentService {
 
     public List<KycDocument> getAllPendingDocuments(){
         return kycDocumentRepository.findByStatus(DocumentStatus.PENDING);
-    }
-
-    public List<KycDocument> debugAll(){
-        return kycDocumentRepository.findAll();
     }
 
 }

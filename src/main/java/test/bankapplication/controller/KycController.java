@@ -1,7 +1,7 @@
 package test.bankapplication.controller;
 
 import org.springframework.web.bind.annotation.*;
-import test.bankapplication.entitiy.KycDocument;
+import test.bankapplication.entity.KycDocument;
 import test.bankapplication.service.KycDocumentService;
 
 import java.util.List;
