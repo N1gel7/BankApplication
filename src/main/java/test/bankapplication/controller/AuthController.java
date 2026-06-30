@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import test.bankapplication.dto.request.AdminCreateRequestDTO;
 import test.bankapplication.dto.request.AuthRequestDTO;
@@ -26,14 +27,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public RegisterResponseDTO register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO){
-        return authService.register(registerRequestDTO);
+    public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequestDTO));
     }
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponseDTO login(@Valid @RequestBody AuthRequestDTO authRequestDTO, HttpServletResponse response){
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO authRequestDTO, HttpServletResponse response){
         AuthResponseDTO authResponseDTO = authService.login(authRequestDTO);
         UserDTO user = authResponseDTO.getUserDTO();
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
@@ -44,7 +43,7 @@ public class AuthController {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
-        return authResponseDTO;
+        return ResponseEntity.ok(authResponseDTO);
     }
 
     @PostMapping("/logout")
@@ -58,9 +57,8 @@ public class AuthController {
     }
 
     @PostMapping("/admin/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponseDTO createAdmin(@Valid @RequestBody AdminCreateRequestDTO adminCreateRequestDTO){
-        return authService.createAdmin(adminCreateRequestDTO);
+    public ResponseEntity<AuthResponseDTO> createAdmin(@Valid @RequestBody AdminCreateRequestDTO adminCreateRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body( authService.createAdmin(adminCreateRequestDTO));
     }
 
 }

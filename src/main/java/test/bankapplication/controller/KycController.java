@@ -1,9 +1,12 @@
 package test.bankapplication.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import test.bankapplication.entity.KycDocument;
 import test.bankapplication.service.KycDocumentService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,22 +19,26 @@ public class KycController {
     }
 
     @PostMapping("/submit")
-    public void submitKyc(java.security.Principal principal){
+    public ResponseEntity<Void> submitKyc(Principal principal){
          kycDocumentService.submitKyc(principal.getName());
+         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @PatchMapping("/{docId}/approve")
-    public void approveKyc(@PathVariable("docId") Integer docId){
+    public ResponseEntity<Void> approveKyc(@PathVariable("docId") Integer docId){
          kycDocumentService.adminApproveKyc(docId);
+         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{docId}/reject")
-  public void rejectKyc(@PathVariable("docId") Integer docId, @RequestParam(required = false) String rejectionMessage){
+  public ResponseEntity<Void> rejectKyc(@PathVariable("docId") Integer docId, @RequestParam(required = false) String rejectionMessage){
         kycDocumentService.adminRejectKyc(docId,rejectionMessage);
+        return ResponseEntity.ok().build();
   }
 
   @GetMapping("/pending")
-  public List<KycDocument> getAllPendingDocument(){
-        return kycDocumentService.getAllPendingDocuments();
+  public ResponseEntity<List<KycDocument>> getAllPendingDocument(){
+        return ResponseEntity.ok(kycDocumentService.getAllPendingDocuments());
   }
 
 }

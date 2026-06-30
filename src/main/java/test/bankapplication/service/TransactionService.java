@@ -3,6 +3,7 @@ package test.bankapplication.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import test.bankapplication.dto.mapper.TransactionMapper;
 import test.bankapplication.dto.request.DepositRequestDTO;
 import test.bankapplication.dto.request.TransferRequestDTO;
 import test.bankapplication.dto.response.TransactionResponseDTO;
@@ -85,7 +86,7 @@ public class TransactionService {
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionRepository.save(transaction);
 
-        return toTransactionResponse(transaction, totalDeducted);
+        return TransactionMapper.toTransactionResponse(transaction, totalDeducted);
     }
 
     public TransactionResponseDTO deposit(DepositRequestDTO depositRequestDTO) {
@@ -108,12 +109,12 @@ public class TransactionService {
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionRepository.save(transaction);
 
-        return toTransactionResponse(transaction, depositRequestDTO.getAmount());
+        return TransactionMapper.toTransactionResponse(transaction, depositRequestDTO.getAmount());
     }
 
     public List<TransactionResponseDTO> getMyTransactions(String email){
         List<Transaction> transactions = transactionRepository.findAllTransactionsByEmail(email);
-        return transactions.stream().map(t->toTransactionResponse(t,t.getAmount().add(t.getFee())))
+        return transactions.stream().map(t->TransactionMapper.toTransactionResponse(t,t.getAmount().add(t.getFee())))
                 .toList();
 
     }
@@ -127,21 +128,10 @@ public class TransactionService {
             transaction = transactionRepository.findAll();
         }
 
-        return transaction.stream().map(t->toTransactionResponse(t, t.getAmount().add(t.getFee())))
+        return transaction.stream().map(t->TransactionMapper.toTransactionResponse(t, t.getAmount().add(t.getFee())))
         .toList();
 
     }
 
-    private TransactionResponseDTO toTransactionResponse(Transaction transaction, BigDecimal totalDeducted) {
-        TransactionResponseDTO dto = new TransactionResponseDTO();
-        dto.setId(transaction.getId());
-        dto.setAmount(transaction.getAmount());
-        dto.setTransactionType(transaction.getTransactionType());
-        dto.setFee(transaction.getFee());
-        dto.setTotalDeducted(totalDeducted);
-        dto.setTransactionStatus(transaction.getTransactionStatus());
-        dto.setTimestamp(transaction.getCreatedAt());
-        return dto;
-    }
-
 }
+
