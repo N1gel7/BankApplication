@@ -24,6 +24,7 @@ public class KycDocumentService {
         this.kycDocumentRepository = kycDocumentRepository;
     }
 
+    @Transactional
     public void submitKyc(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("This user does not exist"));
@@ -37,6 +38,7 @@ public class KycDocumentService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void adminApproveKyc(Integer docId){
         KycDocument kycDocument = kycDocumentRepository.findById(docId).orElseThrow(()-> new ResourceNotFoundException("Document not found"));
         kycDocument.setStatus(DocumentStatus.APPROVED);
@@ -47,6 +49,7 @@ public class KycDocumentService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void adminRejectKyc(Integer docId, String rejectionMessage){
         KycDocument kycDocument = kycDocumentRepository.findById(docId).orElseThrow(()-> new ResourceNotFoundException("This document does not exist"));
         kycDocument.setStatus(DocumentStatus.REJECTED);

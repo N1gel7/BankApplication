@@ -1,6 +1,9 @@
 package test.bankapplication.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import test.bankapplication.enums.KycStatus;
 import test.bankapplication.enums.UserRole;
@@ -13,13 +16,13 @@ public class RegisterRequestDTO {
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
+    @NotBlank @Email
     private String email;
     @NotBlank
     @Size(min = 6, max = 16)
     private String password;
-    @jakarta.validation.constraints.NotNull
-    @com.fasterxml.jackson.annotation.JsonProperty("dob")
+    @NotNull
+    @JsonProperty("dob")
     private LocalDate DOB;
     @NotBlank
     private String phoneNumber;

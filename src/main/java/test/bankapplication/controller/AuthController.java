@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponseDTO login(@RequestBody AuthRequestDTO authRequestDTO, HttpServletResponse response){
+    public AuthResponseDTO login(@Valid @RequestBody AuthRequestDTO authRequestDTO, HttpServletResponse response){
         AuthResponseDTO authResponseDTO = authService.login(authRequestDTO);
         UserDTO user = authResponseDTO.getUserDTO();
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
