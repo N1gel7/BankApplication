@@ -1,6 +1,8 @@
 package test.bankapplication.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import test.bankapplication.dto.request.DepositRequestDTO;
@@ -31,13 +33,13 @@ public class TransactionController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<TransactionResponseDTO>> getTransactions(Principal principal){
-        return ResponseEntity.ok(transactionService.getMyTransactions(principal.getName()));
+    public ResponseEntity<Page<TransactionResponseDTO>> getTransactions(Principal principal, Pageable pageable){
+        return ResponseEntity.ok(transactionService.getMyTransactions(principal.getName(),pageable));
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions(@RequestParam(required = false) Integer userId){
-        return ResponseEntity.ok(transactionService.getAllTransactions(userId)) ;
+    public ResponseEntity<Page<TransactionResponseDTO>> getAllTransactions(@RequestParam(required = false) Integer userId,Pageable pageable){
+        return ResponseEntity.ok(transactionService.getAllTransactions(userId,pageable));
     }
 
 

@@ -2,6 +2,8 @@ package test.bankapplication.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import test.bankapplication.dto.mapper.TransactionMapper;
 import test.bankapplication.dto.request.DepositRequestDTO;
@@ -112,24 +114,23 @@ public class TransactionService {
         return TransactionMapper.toTransactionResponse(transaction, depositRequestDTO.getAmount());
     }
 
-    public List<TransactionResponseDTO> getMyTransactions(String email){
-        List<Transaction> transactions = transactionRepository.findAllTransactionsByEmail(email);
-        return transactions.stream().map(t->TransactionMapper.toTransactionResponse(t,t.getAmount().add(t.getFee())))
-                .toList();
+    public Page<TransactionResponseDTO> getMyTransactions(String email, Pageable pageable){
+        Page<Transaction> transactions = transactionRepository.findAllTransactionsByEmail(email,pageable);
+        return transactions.map(t->TransactionMapper.toTransactionResponse(t,t.getAmount().add(t.getFee())));
 
     }
 
-    public List<TransactionResponseDTO> getAllTransactions(Integer userId){
-        List<Transaction> transaction;
+    public Page<TransactionResponseDTO> getAllTransactions(Integer userId, Pageable pageable){
+        Page<Transaction> transaction;
         if (userId != null) {
-           transaction = transactionRepository.findAllTransactionsByUserId(userId);
+           transaction = transactionRepository.findAllTransactionsByUserId(userId,pageable);
         }
         else{
-            transaction = transactionRepository.findAll();
+            transaction = transactionRepository.findAll(pageable);
         }
 
-        return transaction.stream().map(t->TransactionMapper.toTransactionResponse(t, t.getAmount().add(t.getFee())))
-        .toList();
+        return transaction.map(t->TransactionMapper.toTransactionResponse(t, t.getAmount().add(t.getFee())))
+    ;
 
     }
 
