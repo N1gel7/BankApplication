@@ -15,6 +15,8 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private BigDecimal balance;
+    @Version
+    private Long version;
 
     public Account() {
     }

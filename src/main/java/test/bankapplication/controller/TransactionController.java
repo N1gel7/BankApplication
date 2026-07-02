@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import test.bankapplication.dto.request.DepositRequestDTO;
 import test.bankapplication.dto.request.TransferRequestDTO;
 import test.bankapplication.dto.response.TransactionResponseDTO;
+import test.bankapplication.exception.RateLimitException;
+import test.bankapplication.service.RateLimitingService;
 import test.bankapplication.service.TransactionService;
 
 import java.security.Principal;
@@ -17,13 +19,18 @@ import java.util.List;
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
     private final TransactionService transactionService;
+    private final RateLimitingService rateLimitingService;
 
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, RateLimitingService rateLimitingService) {
         this.transactionService = transactionService;
+        this.rateLimitingService = rateLimitingService;
     }
 
     @PostMapping("/transfer")
     public ResponseEntity<TransactionResponseDTO> transfer(@Valid @RequestBody TransferRequestDTO transferRequestDTO, Principal principal){
+        if(!rateLimitingService.resolveTransferBucket(principal.getName()).tryConsume(1)){
+            throw new RateLimitException("Please wait 5 seconds between transfer");
+        }
         return ResponseEntity.ok(transactionService.transfer(transferRequestDTO,principal.getName()));
     }
 

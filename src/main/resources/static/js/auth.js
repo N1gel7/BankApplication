@@ -90,8 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             window.location.href = "dashboard.html";
                         }
                     }, 1000);
+                } else if (response.status === 429) {
+                    const errorData = await response.json();
+                    showAlert(errorData.message || "Too many login attempts. Please try again later.", "error");
                 } else {
-                    showAlert("Invalid email or password.", "error");
+                    const errorData = await response.json().catch(() => ({}));
+                    showAlert(errorData.message || "Invalid email or password.", "error");
                 }
             } catch (error) {
                 console.error("Error:", error);
