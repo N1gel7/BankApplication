@@ -19,7 +19,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<AccountResponseDTO> createAccount(Principal principal, @Valid @RequestBody AccountRequestDTO accountRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(principal.getName(), accountRequestDTO));
     }

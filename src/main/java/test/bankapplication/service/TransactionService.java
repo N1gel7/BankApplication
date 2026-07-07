@@ -32,18 +32,20 @@ public class TransactionService {
     private final BigDecimal transferFee;
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
+    private  EmailService emailService;
 
     public TransactionService(
             @Value("${account.transfer.limit}") BigDecimal transferLimit,
             @Value("${account.balance.limit}") BigDecimal minimumBalance,
             @Value("${account.transfer.fee}") BigDecimal transferFee,
             TransactionRepository transactionRepository,
-            AccountRepository accountRepository) {
+            AccountRepository accountRepository, EmailService emailService) {
         this.transferLimit = transferLimit;
         this.minimumBalance = minimumBalance;
         this.transferFee = transferFee;
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
+        this.emailService = emailService;
     }
 
 
@@ -87,7 +89,14 @@ public class TransactionService {
         transaction.setCreatedAt(LocalDateTime.now());
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
         transactionRepository.save(transaction);
-
+        
+        try {
+            emailService.sendTransferNotification(sender.getUser().getEmail(), transferRequestDTO.getAmount());
+            emailService.sendDepositNotification(receiver.getUser().getEmail(), transferRequestDTO.getAmount());
+        } catch (Exception e) {
+            System.err.println("Warning: Failed to send email notifications. Please check your Gmail App Password. Transfer was still successful.");
+        }
+        
         return TransactionMapper.toTransactionResponse(transaction, totalDeducted);
     }
 

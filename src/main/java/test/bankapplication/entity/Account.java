@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import test.bankapplication.enums.AccountType;
 
 import java.math.BigDecimal;
+
 @Entity
 public class Account {
     @Id
@@ -15,8 +16,6 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private BigDecimal balance;
-    @Version
-    private Long version;
 
     public Account() {
     }

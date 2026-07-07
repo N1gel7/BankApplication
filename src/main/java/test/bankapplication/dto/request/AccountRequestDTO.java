@@ -1,10 +1,10 @@
 package test.bankapplication.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import test.bankapplication.enums.AccountType;
 
 public class AccountRequestDTO {
-    @NotBlank
+    @NotNull
     private AccountType accountType;
 
     public AccountRequestDTO() {

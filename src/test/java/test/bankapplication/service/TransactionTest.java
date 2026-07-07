@@ -43,6 +43,7 @@ public class TransactionTest {
     private User user2;
     private TransferRequestDTO transferRequestDTO;
     private DepositRequestDTO depositRequestDTO;
+    private EmailService emailService;
     
 
     @BeforeEach
@@ -99,7 +100,8 @@ public class TransactionTest {
                 BigDecimal.valueOf(10),
                 BigDecimal.valueOf(0.02),
                 transactionRepository,
-                accountRepository
+                accountRepository,
+                emailService
         );
 
         transactionTransfer = new Transaction();
