@@ -1,6 +1,6 @@
 # NeoBank - Modern Banking Application
 
-A robust, containerized backend banking application built with **Spring Boot** and **Java 17**. This project demonstrates advanced backend engineering capabilities, including robust security, distributed caching, rate-limiting, and seamless database migrations.
+A containerized backend banking application built with **Spring Boot** and **Java 17**.
 
 ## 🚀 Key Capabilities & Architecture
 
