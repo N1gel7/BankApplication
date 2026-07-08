@@ -1,4 +1,8 @@
-FROM ubuntu:latest
-LABEL authors="nigelnortey"
+FROM amazoncorretto:17-alpine
 
-ENTRYPOINT ["top", "-b"]
+
+WORKDIR /app
+
+COPY target/*.jar app.jar
+
+ENTRYPOINT ["java" , "-jar" ,"app.jar"]

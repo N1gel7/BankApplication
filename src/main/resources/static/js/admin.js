@@ -79,9 +79,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const res = await fetch("/api/v1/transactions");
             if (res.ok) {
-                const txns = await res.json();
+                const responseData = await res.json();
+                const txns = responseData.content || responseData; // Handle both Page and List
                 txnTbody.innerHTML = "";
-                if (txns.length === 0) {
+                if (!txns || txns.length === 0) {
                     txnTbody.innerHTML = `<tr><td colspan="5" class="text-muted-center">No transactions found.</td></tr>`;
                     return;
                 }

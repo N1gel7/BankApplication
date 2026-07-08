@@ -12,9 +12,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

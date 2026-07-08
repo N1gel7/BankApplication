@@ -3,10 +3,12 @@ package test.bankapplication.entity;
 import jakarta.persistence.*;
 import test.bankapplication.enums.DocumentStatus;
 
+import java.io.Serializable;
+
 @Entity
-public class KycDocument {
+public class KycDocument implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @OneToOne
     private User user;
