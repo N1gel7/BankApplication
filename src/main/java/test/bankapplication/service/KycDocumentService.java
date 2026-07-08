@@ -1,5 +1,7 @@
 package test.bankapplication.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import test.bankapplication.entity.KycDocument;
 import test.bankapplication.entity.User;
@@ -25,6 +27,7 @@ public class KycDocumentService {
     }
 
     @Transactional
+    @CacheEvict(value = "pendingKyc" , allEntries = true)
     public void submitKyc(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("This user does not exist"));
@@ -39,6 +42,7 @@ public class KycDocumentService {
     }
 
     @Transactional
+    @CacheEvict(value = "pendingKyc" , allEntries = true)
     public void adminApproveKyc(Integer docId){
         KycDocument kycDocument = kycDocumentRepository.findById(docId).orElseThrow(()-> new ResourceNotFoundException("Document not found"));
         kycDocument.setStatus(DocumentStatus.APPROVED);
@@ -50,6 +54,7 @@ public class KycDocumentService {
     }
 
     @Transactional
+    @CacheEvict(value = "pendingKyc" , allEntries = true)
     public void adminRejectKyc(Integer docId, String rejectionMessage){
         KycDocument kycDocument = kycDocumentRepository.findById(docId).orElseThrow(()-> new ResourceNotFoundException("This document does not exist"));
         kycDocument.setStatus(DocumentStatus.REJECTED);
@@ -61,6 +66,7 @@ public class KycDocumentService {
 
     }
 
+    @Cacheable(value = "pendingKyc")
     public List<KycDocument> getAllPendingDocuments(){
         return kycDocumentRepository.findByStatus(DocumentStatus.PENDING);
     }
